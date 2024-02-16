@@ -1,15 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { worker } from "./mocks/worker";
+import { createBrowserRouter,RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+
+if (process.env.NODE_ENV === "development") {
+  worker.start();
+}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    // errorElement:<NotFound ></NotFound>,
+    children: [
+      { index: true, path: "/", element: <Home></Home> },
+      // { path: "/view/:url", element: <View /> },
+      // { path: "/input", element: <Form /> },
+    ],
+  },
+]);
+
+
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
